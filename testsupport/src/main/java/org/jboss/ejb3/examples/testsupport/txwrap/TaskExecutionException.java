@@ -21,8 +21,8 @@
  */
 package org.jboss.ejb3.examples.testsupport.txwrap;
 
-import javax.ejb.ApplicationException;
-import javax.ejb.EJBException;
+import jakarta.ejb.ApplicationException;
+import jakarta.ejb.EJBException;
 
 /**
  * Indicates that an exception has occurred while submitting

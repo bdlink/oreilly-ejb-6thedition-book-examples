@@ -21,8 +21,8 @@
  */
 package org.jboss.ejb3.examples.testsupport.dbquery;
 
-import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
+import jakarta.ejb.TransactionAttributeType;
+import jakarta.persistence.EntityManager;
 
 /**
  * Contract of a test EJB which exposes generic database

@@ -30,16 +30,18 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.logging.Logger;
 
-import javax.ejb.PostActivate;
-import javax.ejb.PrePassivate;
+import jakarta.ejb.PostActivate;
+import jakarta.ejb.PrePassivate;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  * Test cases to ensure that the FileTransfer business
@@ -96,7 +98,7 @@ public class FileTransferUnitTestCase extends FileTransferTestCaseBase
     * to which our test clients will connect. 
     * Called once before any tests run.
     */
-   @BeforeClass
+   @BeforeAll
    public static void createFtpService() throws Exception
    {
       // Create the FTP Service
@@ -123,7 +125,7 @@ public class FileTransferUnitTestCase extends FileTransferTestCaseBase
     * 
     * @throws Exception
     */
-   @AfterClass
+   @AfterAll
    public static void destroyFtpService() throws Exception
    {
       // Only run if initialization finished
@@ -144,7 +146,7 @@ public class FileTransferUnitTestCase extends FileTransferTestCaseBase
     * Creates and initializes the FTP Client used in testing.
     * Fired before each test is run.
     */
-   @Before
+   @BeforeEach
    public void createFtpClient() throws Exception
    {
       // Create client
@@ -164,7 +166,7 @@ public class FileTransferUnitTestCase extends FileTransferTestCaseBase
     * 
     * @throws Exception
     */
-   @After
+   @AfterEach
    public void cleanup() throws Exception
    {
       // Get client
@@ -207,7 +209,7 @@ public class FileTransferUnitTestCase extends FileTransferTestCaseBase
 
       // Test the pwd
       final String pwdBefore = client.pwd();
-      TestCase.assertEquals("Present working directory should be set to home", home, pwdBefore);
+      assertEquals(home, pwdBefore, "Present working directory should be set to home");
 
       // Mock @PrePassivate
       log.info("Mock @" + PrePassivate.class.getName());
@@ -235,8 +237,8 @@ public class FileTransferUnitTestCase extends FileTransferTestCaseBase
 
       // Test the pwd
       final String pwdAfter = serializedClient.pwd();
-      TestCase.assertEquals("Present working directory should be the same as before passivation/activation", home,
-            pwdAfter);
+      assertEquals(home, pwdAfter,
+            "Present working directory should be the same as before passivation/activation");
    }
 
    //-------------------------------------------------------------------------------------||

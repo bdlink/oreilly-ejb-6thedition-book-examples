@@ -3,7 +3,7 @@
  * Copyright 2009, Red Hat Middleware LLC, and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
-  *
+ *
  * This is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation; either version 2.1 of
@@ -19,20 +19,18 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
+
 package org.jboss.ejb3.examples.ch04.firstejb;
 
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 /**
- * Contains functions to assert that implementations
- * of {@link CalculatorCommonBusiness} are working 
- * as expected 
+ * Base for bean implementation classes of the CalculatorEJB, 
+ * provides business logic for required contracts
  *
  * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
  */
-class CalculatorAssertionDelegate
+public class CalculatorBeanBase implements CalculatorCommonBusiness
 {
    // ---------------------------------------------------------------------------||
    // Class Members -------------------------------------------------------------||
@@ -41,40 +39,36 @@ class CalculatorAssertionDelegate
    /**
     * Logger
     */
-   private static final Logger log = Logger.getLogger(CalculatorAssertionDelegate.class.getName());
+   private static final Logger log = Logger.getLogger(CalculatorBeanBase.class.getName());
 
    // ---------------------------------------------------------------------------||
-   // Functional Methods --------------------------------------------------------||
+   // Required Implementations --------------------------------------------------||
    // ---------------------------------------------------------------------------||
 
    /**
-    * Uses the supplied Calculator instance to test the addition
-    * algorithm
+    * {@inheritDoc}
+    * @see org.jboss.ejb3.examples.ch04.firstejb.CalculatorCommonBusiness#add(int[])
     */
-   void assertAdditionSucceeds(final CalculatorCommonBusiness calc)
+   @Override
+   public int add(final int... arguments)
    {
       // Initialize
-      final int[] arguments = new int[]
-      {2, 3, 5};
-      final int expectedSum = 10;
-
-      // Add
-      final int actualSum = calc.add(arguments);
-
-      // Test
-      assertEquals(expectedSum, actualSum,
-              "Addition did not return the expected result");
-
-      // Log
       final StringBuffer sb = new StringBuffer();
-      sb.append("Obtained expected result, ");
-      sb.append(actualSum);
-      sb.append(", from arguments: ");
+      sb.append("Adding arguments: ");
+      int result = 0;
+
+      // Add all arguments
       for (final int arg : arguments)
       {
+         result += arg;
          sb.append(arg);
          sb.append(" ");
       }
+
+      // Return
       log.info(sb.toString());
+      log.info("Result: " + result);
+      return result;
    }
+
 }

@@ -25,22 +25,22 @@ package org.jboss.ejb3.examples.ch04.firstejb;
 import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
-import javax.ejb.EJB;
+import jakarta.ejb.EJB;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Integration tests for the CalculatorEJB, testing many views
  *
  * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class MultiViewCalculatorIntegrationTestCase
 {
    // ---------------------------------------------------------------------------||
@@ -88,7 +88,7 @@ public class MultiViewCalculatorIntegrationTestCase
    /**
     * Run once before any tests
     */
-   @Before
+   @BeforeEach
    public void beforeClass() throws Throwable
    {
       // Create Assertion Delegate

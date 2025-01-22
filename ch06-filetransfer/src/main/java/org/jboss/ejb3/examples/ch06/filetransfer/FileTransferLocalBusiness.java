@@ -21,7 +21,7 @@
  */
 package org.jboss.ejb3.examples.ch06.filetransfer;
 
-import javax.ejb.Remove;
+import jakarta.ejb.Remove;
 
 /**
  * Local Business interface for the FileTransferEJB.

@@ -21,7 +21,7 @@
  */
 package org.jboss.ejb3.examples.ch05.encryption;
 
-import javax.ejb.ApplicationException;
+import jakarta.ejb.ApplicationException;
 
 /**
  * A checked Application Exception denoting

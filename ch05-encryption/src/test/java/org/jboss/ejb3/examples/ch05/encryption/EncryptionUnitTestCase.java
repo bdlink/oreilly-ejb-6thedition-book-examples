@@ -23,8 +23,8 @@ package org.jboss.ejb3.examples.ch05.encryption;
 
 import java.util.logging.Logger;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
 
 /**
  * Tests to ensure that the business methods of the EncryptionEJB
@@ -55,7 +55,7 @@ public class EncryptionUnitTestCase extends EncryptionTestCaseSupport
    /**
     * Initializes the suite, invoked once before any tests are run 
     */
-   @BeforeClass
+   @BeforeAll
    public static void initialize() throws Throwable
    {
       // Create the encryption service as a POJO

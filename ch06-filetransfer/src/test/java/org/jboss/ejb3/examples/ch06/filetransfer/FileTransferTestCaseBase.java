@@ -24,12 +24,10 @@ package org.jboss.ejb3.examples.ch06.filetransfer;
 import java.io.File;
 import java.util.logging.Logger;
 
-import junit.framework.TestCase;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Base tests for the file transfer test classes, may
@@ -76,7 +74,7 @@ public abstract class FileTransferTestCaseBase
     * 
     * @throws Exception
     */
-   @Before
+   @BeforeEach
    public void createFtpHome() throws Exception
    {
       final File ftpHome = getFtpHome();
@@ -98,7 +96,7 @@ public abstract class FileTransferTestCaseBase
     * 
     * @throws Exception
     */
-   @After
+   @AfterEach
    public void deleteFtpHome() throws Exception
    {
       final File ftpHome = getFtpHome();
@@ -138,7 +136,7 @@ public abstract class FileTransferTestCaseBase
 
       // Ensure we're home
       final String pwdBefore = client.pwd();
-      TestCase.assertEquals("Present working directory should be our home", home, pwdBefore);
+      assertEquals(home, pwdBefore, "Present working directory should be our home");
 
       // Make the directory
       final String newDir = "newDirectory";
@@ -149,8 +147,8 @@ public abstract class FileTransferTestCaseBase
 
       // Ensure we're in the new directory
       final String pwdAfter = client.pwd();
-      TestCase.assertEquals("Present working directory should be our new directory", home + File.separator + newDir,
-            pwdAfter);
+      assertEquals(home + File.separator + newDir,
+            pwdAfter, "Present working directory should be our new directory");
    }
 
    //-------------------------------------------------------------------------------------||

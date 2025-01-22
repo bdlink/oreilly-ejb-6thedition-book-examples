@@ -21,8 +21,8 @@
  */
 package org.jboss.ejb3.examples.testsupport.entity;
 
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 
 /**
  * Base class for all entities with a manually-assigned ID

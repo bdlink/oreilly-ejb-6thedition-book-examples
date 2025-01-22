@@ -22,14 +22,24 @@
 
 package org.jboss.ejb3.examples.ch04.firstejb;
 
-import jakarta.ejb.EJBLocalObject;
-
 /**
- * EJB 2.x Local Component interface of the CalculatorEJB
+ * Contains the contract for operations common to 
+ * all business interfaces of the CalculatorEJB
  *
  * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
  */
-public interface CalculatorLocal extends CalculatorCommonBusiness, EJBLocalObject
+public interface CalculatorCommonBusiness
 {
+
+   // ---------------------------------------------------------------------------||
+   // Contracts -----------------------------------------------------------------||
+   // ---------------------------------------------------------------------------||
+
+   /**
+    * Adds all arguments
+    * 
+    * @return The sum of all arguments
+    */
+   int add(int... arguments);
 
 }

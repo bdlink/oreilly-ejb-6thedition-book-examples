@@ -21,7 +21,7 @@
  */
 package org.jboss.ejb3.examples.testsupport.txwrap;
 
-import javax.ejb.ApplicationException;
+import jakarta.ejb.ApplicationException;
 
 /**
  * May be thrown manually by the test to force a transactional

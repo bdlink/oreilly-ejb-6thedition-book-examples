@@ -23,10 +23,10 @@ package org.jboss.ejb3.examples.testsupport.txwrap;
 
 import java.util.concurrent.Callable;
 
-import javax.ejb.Local;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+import jakarta.ejb.Local;
+import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 
 /**
  * EJB which wraps a specified series of {@link Callable}

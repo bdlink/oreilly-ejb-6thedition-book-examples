@@ -24,21 +24,22 @@ package org.jboss.ejb3.examples.ch06.filetransfer;
 import java.io.File;
 import java.util.logging.Logger;
 
-import javax.ejb.EJB;
-import javax.ejb.NoSuchEJBException;
-
-import junit.framework.TestCase;
+import jakarta.ejb.EJB;
+import jakarta.ejb.NoSuchEJBException;
 
 import org.apache.commons.net.SocketClient;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Test cases to ensure that the FileTransferEJB is working as
@@ -51,7 +52,7 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class FileTransferIntegrationTestCase extends FileTransferTestCaseBase
 {
 
@@ -115,7 +116,7 @@ public class FileTransferIntegrationTestCase extends FileTransferTestCaseBase
    /**
     * Creates and starts the FTP Server
     */
-   @BeforeClass
+   @BeforeAll
    public static void startFtpServer() throws Exception
    {
       // Create
@@ -135,7 +136,7 @@ public class FileTransferIntegrationTestCase extends FileTransferTestCaseBase
     * Stops the FTP Server
     * @throws Exception
     */
-   @AfterClass
+   @AfterAll
    public static void stopFtpServer() throws Exception
    {
       ftpServer.stopServer();
@@ -145,7 +146,7 @@ public class FileTransferIntegrationTestCase extends FileTransferTestCaseBase
     * Ends the session upon the FTP Client SFSB Proxy 
     * and resets
     */
-   @After
+   @AfterEach
    public void endClientSessions() throws Exception
    {
       // End the session for client 1
@@ -210,8 +211,10 @@ public class FileTransferIntegrationTestCase extends FileTransferTestCaseBase
       final String pwdSession2 = session2.pwd();
 
       // Ensure each session is in the proper working directory
-      TestCase.assertEquals("Session 1 is in unexpected pwd", ftpHome + File.separator + newDirSession1, pwdSession1);
-      TestCase.assertEquals("Session 2 is in unexpected pwd", ftpHome + File.separator + newDirSession2, pwdSession2);
+      assertEquals(ftpHome + File.separator + newDirSession1, pwdSession1, 
+              "Session 1 is in unexpected pwd");
+      assertEquals(ftpHome + File.separator + newDirSession2, pwdSession2, 
+              "Session 2 is in unexpected pwd");
 
       // End the session manually for session2 (session1 will be ended by test lifecycle)
       session2.endSession();
@@ -239,7 +242,8 @@ public class FileTransferIntegrationTestCase extends FileTransferTestCaseBase
 
       // Get and test the pwd
       final String pwdBefore = sfsb.pwd();
-      TestCase.assertEquals("Session should be in the FTP Home directory", ftpHome, pwdBefore);
+      assertEquals(ftpHome, pwdBefore, 
+              "Session should be in the FTP Home directory");
 
       // End the session, resulting in an underlying instance
       // removal due to the annotation with @Remove upon 
@@ -257,8 +261,8 @@ public class FileTransferIntegrationTestCase extends FileTransferTestCaseBase
       {
          gotExpectedException = true;
       }
-      TestCase.assertTrue("Call to end the session did not result in underlying removal of the SFSB bean instance",
-            gotExpectedException);
+      assertTrue(gotExpectedException, 
+              "Call to end the session did not result in underlying removal of the SFSB bean instance");
    }
 
    //-------------------------------------------------------------------------------------||

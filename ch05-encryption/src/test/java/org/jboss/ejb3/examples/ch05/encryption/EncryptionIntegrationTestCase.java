@@ -28,24 +28,26 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import javax.ejb.EJB;
-
-import junit.framework.TestCase;
+import jakarta.ejb.EJB;
 
 import org.apache.commons.codec.BinaryEncoder;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Integration tests for the EncryptionEJB
  *
  * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class EncryptionIntegrationTestCase extends EncryptionTestCaseSupport
 {
    // ---------------------------------------------------------------------------||
@@ -129,13 +131,13 @@ public class EncryptionIntegrationTestCase extends EncryptionTestCaseSupport
       log.info("Hash of \"" + input + "\": " + hash);
 
       // Test that the has function had some effect
-      TestCase.assertNotSame("The hash function had no effect upon the supplied input", input, hash);
+      assertNotSame(input, hash, "The hash function had no effect upon the supplied input");
 
       // Get the comparison result
       final boolean equal = encryptionLocalBusiness.compare(hash, input);
 
       // Test that the input matches the hash we'd gotten
-      TestCase.assertTrue("The comparison of the input to its hashed result failed", equal);
+      assertTrue(equal, "The comparison of the input to its hashed result failed");
    }
 
    /**
@@ -168,8 +170,8 @@ public class EncryptionIntegrationTestCase extends EncryptionTestCaseSupport
       log.info("Using MessageDigest algorithm: " + algorithm);
 
       // Ensure expected
-      TestCase.assertEquals("MessageDigest algorithm should have been overridden from the environment entry",
-            EXPECTED_ALGORITHM_MESSAGE_DIGEST, algorithm);
+      assertEquals(EXPECTED_ALGORITHM_MESSAGE_DIGEST, algorithm, 
+              "MessageDigest algorithm should have been overridden from the environment entry");
    }
 
    /**
@@ -189,8 +191,8 @@ public class EncryptionIntegrationTestCase extends EncryptionTestCaseSupport
       log.info("Using Encryption passphrase: " + passphrase);
 
       // Ensure expected
-      TestCase.assertEquals("Encryption passphrase should have been overridden from the environment entry",
-            EXPECTED_CIPHERS_PASSPHRASE, passphrase);
+      assertEquals(EXPECTED_CIPHERS_PASSPHRASE, passphrase, 
+              "Encryption passphrase should have been overridden from the environment entry");
    }
 
 }

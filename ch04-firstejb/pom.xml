@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jboss.ejb3.examples</groupId>
     <artifactId>jboss-ejb3-examples-build</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
     <relativePath>../build/pom.xml</relativePath>
   </parent>
 
@@ -17,60 +17,78 @@
   <name>JBoss EJB 3.x Examples - Chapter 4: Calculator Service EJBs</name>
   <description>Example to accompany O'Reilly "Enterprise Java Beans 6th Edition" Chapter 4</description>
 
-  <!-- Dependencies -->
-  <dependencies>
-
-    <dependency>
-      <groupId>org.jboss.as</groupId>
-      <artifactId>jboss-as-spec-api</artifactId>
-      <type>pom</type>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-
-    <!-- Arquillian Test Harness -->
-    <dependency>
-      <groupId>org.jboss.as</groupId>
-      <artifactId>jboss-as-arquillian-container-managed</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.junit</groupId>
-      <artifactId>arquillian-junit-container</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.as</groupId>
-      <artifactId>jboss-as-dist</artifactId>
-      <type>zip</type>
-      <scope>test</scope>
-    </dependency>
-    
-            <!-- 
-    HACK:
-    Currently the ARQ Managed Container is not exporting
-    all deps needed to run, at a minimum, jboss-threads
-    AS7-1557
-    -->
-    <dependency>
-      <groupId>org.jboss.as</groupId>
-      <artifactId>jboss-as-build</artifactId>
-      <type>pom</type>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.faces</groupId>
-          <artifactId>jsf-impl</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>xalan</groupId>
-          <artifactId>serializer</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-  </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<classifier>jakarta</classifier>
+		</dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit5</groupId>
+            <artifactId>arquillian-junit5-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- see: https://github.com/arquillian/arquillian-core/issues/248 -->
+        <!-- and https://github.com/arquillian/arquillian-core/pull/246/files -->
+        <dependency>
+            <groupId>org.jboss.arquillian.protocol</groupId>
+            <artifactId>arquillian-protocol-servlet-jakarta</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.resolver</groupId>
+            <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+	</dependencies>
+	<build>
+		<finalName>test-ejb</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven-war-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>${wildfly-maven-plugin.version}</version>
+				<configuration>
+					<discover-provisioning-info>
+						<version>${version.wildfly}</version>
+						<verbose>true</verbose>
+						<context>cloud</context>
+					</discover-provisioning-info>
+					<galleon-options>
+						<jboss-fork-embedded>true</jboss-fork-embedded>
+					</galleon-options>
+					<runtime-name>ROOT.war</runtime-name>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>package</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
   <profiles>
 

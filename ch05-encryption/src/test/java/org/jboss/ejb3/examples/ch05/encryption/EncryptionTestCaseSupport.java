@@ -23,7 +23,9 @@ package org.jboss.ejb3.examples.ch05.encryption;
 
 import java.util.logging.Logger;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Common base for centralizing test logic used
@@ -73,13 +75,15 @@ public class EncryptionTestCaseSupport
       log.info("Hash of \"" + input + "\": " + hash);
 
       // Test that the has function had some effect
-      TestCase.assertNotSame("The hash function had no effect upon the supplied input", input, hash);
+      assertNotSame(input, hash, 
+              "The hash function had no effect upon the supplied input");
 
       // Get the comparison result
       final boolean equal = service.compare(hash, input);
 
       // Test that the input matches the hash we'd gotten
-      TestCase.assertTrue("The comparison of the input to its hashed result failed", equal);
+      
+      assertTrue(equal, "The comparison of the input to its hashed result failed");
    }
 
    /**
@@ -104,12 +108,14 @@ public class EncryptionTestCaseSupport
       log.info("Encrypted result of \"" + input + "\": " + encrypted);
 
       // Test that the has function had some effect
-      TestCase.assertNotSame("The encryption function had no effect upon the supplied input", input, encrypted);
+      assertNotSame(input, encrypted, 
+              "The encryption function had no effect upon the supplied input");
 
       // Get the round-trip result
       final String roundTrip = service.decrypt(encrypted);
 
       // Test that the result matches the original input
-      TestCase.assertEquals("The comparison of the input to its encrypted result failed", input, roundTrip);
+      assertEquals(input, roundTrip, 
+              "The comparison of the input to its encrypted result failed");
    }
 }

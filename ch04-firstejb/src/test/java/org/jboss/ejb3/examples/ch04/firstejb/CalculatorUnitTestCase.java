@@ -24,10 +24,10 @@ package org.jboss.ejb3.examples.ch04.firstejb;
 
 import java.util.logging.Logger;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
 
 /**
  * Tests to ensure that the business methods of the CalculatorEJB
@@ -55,7 +55,7 @@ public class CalculatorUnitTestCase
    // Lifecycle Methods ---------------------------------------------------------||
    // ---------------------------------------------------------------------------||
 
-   @BeforeClass
+   @BeforeAll
    public static void beforeClass()
    {
       // Make a POJO instance adhering to the 
@@ -84,7 +84,7 @@ public class CalculatorUnitTestCase
       final int actualSum = calc.add(arguments);
 
       // Test
-      TestCase.assertEquals("Addition did not return the expected result", expectedSum, actualSum);
+      assertEquals(expectedSum, actualSum, "Addition did not return the expected result");
 
       // Log
       final StringBuffer sb = new StringBuffer();
