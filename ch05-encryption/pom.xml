@@ -89,34 +89,6 @@
 
         <plugins>
         
-          <!-- Get AS and put into "target" -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>pre-integration-test</phase> <!-- So run before testing -->
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.jboss.as</groupId>
-                      <artifactId>jboss-as-dist</artifactId>
-                      <version>${version.org.jboss.as.7}</version>
-                      <type>zip</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-         
-
           <!-- Surefire -->
           <plugin>
             <artifactId>maven-surefire-plugin</artifactId>

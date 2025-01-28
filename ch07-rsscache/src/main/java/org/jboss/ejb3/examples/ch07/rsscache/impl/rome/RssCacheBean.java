@@ -7,14 +7,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.ConcurrencyManagement;
-import javax.ejb.ConcurrencyManagementType;
-import javax.ejb.Lock;
-import javax.ejb.LockType;
-import javax.ejb.Remote;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import jakarta.annotation.PostConstruct;
+import jakarta.ejb.ConcurrencyManagement;
+import jakarta.ejb.ConcurrencyManagementType;
+import jakarta.ejb.Lock;
+import jakarta.ejb.LockType;
+import jakarta.ejb.Remote;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
 
 import org.jboss.ejb3.examples.ch07.rsscache.spi.RssCacheCommonBusiness;
 import org.jboss.ejb3.examples.ch07.rsscache.spi.RssEntry;

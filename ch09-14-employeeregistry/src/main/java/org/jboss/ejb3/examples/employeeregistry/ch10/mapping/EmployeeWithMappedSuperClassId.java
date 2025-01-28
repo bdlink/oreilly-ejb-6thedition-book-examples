@@ -21,9 +21,9 @@
  */
 package org.jboss.ejb3.examples.employeeregistry.ch10.mapping;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import org.jboss.ejb3.examples.testsupport.entity.AutogenIdentityBase;
 import org.jboss.ejb3.examples.testsupport.entity.IdentityBase;

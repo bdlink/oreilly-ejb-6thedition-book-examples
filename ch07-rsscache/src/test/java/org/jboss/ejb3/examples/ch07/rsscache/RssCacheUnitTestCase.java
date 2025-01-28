@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 
 import org.jboss.ejb3.examples.ch07.rsscache.impl.rome.TestRssCacheBean;
 import org.jboss.ejb3.examples.ch07.rsscache.spi.RssCacheCommonBusiness;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
 
 /**
  * Unit Tests for the RssCache classes, 
@@ -61,10 +61,10 @@ public class RssCacheUnitTestCase extends RssCacheTestCaseBase
     * Creates a POJO instance to mock the real Container EJB @Singleton
     * before any tests are run
     */
-   @BeforeClass
+   @BeforeAll
    public static void createPojo()
    {
-      // Instanciate and set
+      // Instantiate and set
       final TestRssCacheBean bean = new TestRssCacheBean();
       RssCacheUnitTestCase.bean = bean;
       log.info("Created POJO instance: " + bean);
@@ -88,7 +88,7 @@ public class RssCacheUnitTestCase extends RssCacheTestCaseBase
    /**
     * Resets the POJO instance to null after all tests are run
     */
-   @AfterClass
+   @AfterAll
    public static void clearPojo()
    {
       // Set to null so we don't ever leak instances between test runs

@@ -113,7 +113,6 @@
 			<plugin>
 				<groupId>org.wildfly.plugins</groupId>
 				<artifactId>wildfly-maven-plugin</artifactId>
-				<version>${wildfly-maven-plugin.version}</version>
 				<configuration>
 					<discover-provisioning-info>
 						<version>${version.wildfly}</version>

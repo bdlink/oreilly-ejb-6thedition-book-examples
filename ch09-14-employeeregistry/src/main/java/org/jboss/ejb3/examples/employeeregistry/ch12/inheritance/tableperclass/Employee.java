@@ -21,7 +21,7 @@
  */
 package org.jboss.ejb3.examples.employeeregistry.ch12.inheritance.tableperclass;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 /**
  * Employee

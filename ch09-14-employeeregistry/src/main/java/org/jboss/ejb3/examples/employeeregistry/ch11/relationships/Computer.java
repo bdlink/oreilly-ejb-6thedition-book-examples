@@ -21,9 +21,9 @@
  */
 package org.jboss.ejb3.examples.employeeregistry.ch11.relationships;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 
 import org.jboss.ejb3.examples.testsupport.entity.AutogenIdentityBase;
 

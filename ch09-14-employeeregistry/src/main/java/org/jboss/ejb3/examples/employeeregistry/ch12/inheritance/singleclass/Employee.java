@@ -21,8 +21,8 @@
  */
 package org.jboss.ejb3.examples.employeeregistry.ch12.inheritance.singleclass;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 /**
  * Employee

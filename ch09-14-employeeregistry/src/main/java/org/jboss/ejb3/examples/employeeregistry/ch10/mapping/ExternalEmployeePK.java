@@ -23,7 +23,7 @@ package org.jboss.ejb3.examples.employeeregistry.ch10.mapping;
 
 import java.io.Serializable;
 
-import javax.persistence.IdClass;
+import jakarta.persistence.IdClass;
 
 /**
  * Composite primary key class to be used as  

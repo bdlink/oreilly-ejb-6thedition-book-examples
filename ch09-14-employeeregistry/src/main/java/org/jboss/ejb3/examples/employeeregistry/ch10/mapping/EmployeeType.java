@@ -21,7 +21,7 @@
  */
 package org.jboss.ejb3.examples.employeeregistry.ch10.mapping;
 
-import javax.persistence.Enumerated;
+import jakarta.persistence.Enumerated;
 
 /**
  * Types of employees in the system.  Used to show {@link Enumerated}

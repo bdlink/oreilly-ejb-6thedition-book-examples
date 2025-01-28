@@ -23,9 +23,9 @@ package org.jboss.ejb3.examples.employeeregistry.ch10.mapping;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
 
 /**
  * Composite primary key class to be used as  

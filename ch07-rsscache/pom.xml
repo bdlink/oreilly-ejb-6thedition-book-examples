@@ -17,11 +17,6 @@
   <name>JBoss EJB 3.x Examples - Chapter 7: RssCache EJBs</name>
   <description>Example to accompany O'Reilly "Enterprise Java Beans 6th Edition" Chapter 7</description>
 
-  <!-- Build -->
-  <build>
-  </build>
-
-
   <!-- Properties -->
   <properties>
 
@@ -33,16 +28,38 @@
   <!-- Dependencies -->
   <dependencies>
 
-    <dependency>
-      <groupId>org.jboss.as</groupId>
-      <artifactId>jboss-as-spec-api</artifactId>
-      <type>pom</type>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
+ 		<dependency>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit5</groupId>
+            <artifactId>arquillian-junit5-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- see: https://github.com/arquillian/arquillian-core/issues/248 -->
+        <!-- and https://github.com/arquillian/arquillian-core/pull/246/files -->
+        <dependency>
+            <groupId>org.jboss.arquillian.protocol</groupId>
+            <artifactId>arquillian-protocol-servlet-jakarta</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.resolver</groupId>
+            <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
 
     <!-- Rome library for RSS parsing -->
     <dependency>
@@ -51,11 +68,12 @@
       <version>${version.rome_rome.fetcher}</version>
     </dependency>
     
-    <dependency>
-      <groupId>org.mortbay.jetty</groupId>
-      <artifactId>jetty</artifactId>
-      <version>6.1.16</version>
-    </dependency>
+<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server -->
+<dependency>
+    <groupId>org.eclipse.jetty</groupId>
+    <artifactId>jetty-server</artifactId>
+    <version>12.0.16</version>
+</dependency>
     
     <dependency>
       <groupId>commons-codec</groupId>
@@ -79,6 +97,58 @@
       </releases>
     </repository>
   </repositories>
+	<build>
+		<finalName>test-ejb</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven-war-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<version>${wildfly-maven-plugin.version}</version>
+				<configuration>
+					<discover-provisioning-info>
+						<version>${version.wildfly}</version>
+						<verbose>true</verbose>
+						<context>cloud</context>
+					</discover-provisioning-info>
+					<galleon-options>
+						<jboss-fork-embedded>true</jboss-fork-embedded>
+					</galleon-options>
+					<runtime-name>ROOT.war</runtime-name>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>package</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+	  <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <includeScope>runtime</includeScope>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <stripVersion>true</stripVersion>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+		</plugins>
+	</build>
+
 
   <profiles>
 
@@ -138,21 +208,7 @@
 
                 Start JBossAS with our new configuration
               -->
-              <execution>
-                <id>start-jbossas</id>
-                <goals>
-                  <goal>start</goal>
-                </goals>
-                <phase>pre-integration-test</phase>
-                <configuration>
-                  <jvmArgs>
-                    <jvmArg>-Xmx512M</jvmArg>
-                  </jvmArgs>
-                  <serverConfigName>default</serverConfigName>
-                  <jboss.test.run>true</jboss.test.run>
-                </configuration>
-              </execution>
-
+ 
               <!--
                 Deploy into our custom JBossAS Configuration
               -->
@@ -178,18 +234,7 @@
 
                 Stop JBossAS
               -->
-              <execution>
-                <id>stop-jbossas</id>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-                <phase>post-integration-test</phase>
-                <configuration>
-                  <serverConfigName>default</serverConfigName>
-                  <jboss.test.run>true</jboss.test.run>
-                </configuration>
-              </execution>
-
+ 
             </executions>
 
           </plugin>

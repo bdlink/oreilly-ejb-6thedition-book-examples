@@ -17,14 +17,6 @@
   <name>JBoss EJB 3.x Examples - Chapters 9-14: Employee Registry EJBs</name>
   <description>Example to accompany O'Reilly "Enterprise Java Beans 6th Edition" Chapter 9-14</description>
 
-  <!-- Properties -->
-  <properties>
-
-    <!-- Versioning -->
-    <!-- JBOSS_HOME (We'll unpack into here -->
-    <JBOSS_HOME>${project.build.directory}/jboss-${version.org.jboss.jbossas}</JBOSS_HOME>
-
-  </properties>
 
   <!-- Dependencies -->
   <dependencies>
@@ -35,78 +27,39 @@
       <artifactId>jboss-ejb3-examples-testsupport</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.jboss.as</groupId>
-      <artifactId>jboss-as-spec-api</artifactId>
-      <type>pom</type>
-    </dependency>
-    
-    
-    <!-- 
-    
-    Test Dependencies
-     -->
-
-    <!-- Arquillian Test Harness -->
-    <dependency>
-      <groupId>org.jboss.as</groupId>
-      <artifactId>jboss-as-arquillian-container-managed</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.junit</groupId>
-      <artifactId>arquillian-junit-container</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.as</groupId>
-      <artifactId>jboss-as-dist</artifactId>
-      <type>zip</type>
-      <scope>test</scope>
-    </dependency>
-    
-    <!-- 
-    HACK:
-    Currently the ARQ Managed Container is not exporting
-    all deps needed to run, at a minimum, jboss-threads
-    AS7-1557
-    -->
-    <dependency>
-      <groupId>org.jboss.as</groupId>
-      <artifactId>jboss-as-build</artifactId>
-      <type>pom</type>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>javax.faces</groupId>
-          <artifactId>jsf-impl</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>xalan</groupId>
-          <artifactId>serializer</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    
-    <!-- JUnit -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-
+    		<dependency>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit5</groupId>
+            <artifactId>arquillian-junit5-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- see: https://github.com/arquillian/arquillian-core/issues/248 -->
+        <!-- and https://github.com/arquillian/arquillian-core/pull/246/files -->
+        <dependency>
+            <groupId>org.jboss.arquillian.protocol</groupId>
+            <artifactId>arquillian-protocol-servlet-jakarta</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap.resolver</groupId>
+            <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
   </dependencies>
-  
-  <dependencyManagement>
-    <dependencies>
-      <!-- To honor exclusions -->
-      <dependency>
-        <groupId>org.jboss.as</groupId>
-        <artifactId>jboss-as-parent</artifactId>
-        <type>pom</type>
-        <scope>import</scope>
-        <version>${version.org.jboss.as.7}</version>
-      </dependency> 
-    </dependencies>
-    
-  </dependencyManagement>
   
   <profiles>
   

@@ -21,8 +21,8 @@
  */
 package org.jboss.ejb3.examples.employeeregistry.ch09.entitymanager;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 /**
  * Represents an Employee in the system.  Modeled as a simple

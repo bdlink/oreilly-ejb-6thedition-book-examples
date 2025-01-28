@@ -21,9 +21,9 @@
  */
 package org.jboss.ejb3.examples.employeeregistry.ch11.relationships;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import org.jboss.ejb3.examples.testsupport.entity.AutogenIdentityBase;
 

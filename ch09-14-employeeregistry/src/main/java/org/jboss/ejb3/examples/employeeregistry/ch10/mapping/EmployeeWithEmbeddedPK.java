@@ -21,8 +21,8 @@
  */
 package org.jboss.ejb3.examples.employeeregistry.ch10.mapping;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 
 /**
  * Represents an Employee in the system.  The identity

@@ -21,9 +21,9 @@
  */
 package org.jboss.ejb3.examples.employeeregistry.ch10.mapping;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
 
 /**
  * Represents an Employee in the system.  The identity

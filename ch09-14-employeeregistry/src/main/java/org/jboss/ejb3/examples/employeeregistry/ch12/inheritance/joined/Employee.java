@@ -21,8 +21,8 @@
  */
 package org.jboss.ejb3.examples.employeeregistry.ch12.inheritance.joined;
 
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 
 /**
  * Employee

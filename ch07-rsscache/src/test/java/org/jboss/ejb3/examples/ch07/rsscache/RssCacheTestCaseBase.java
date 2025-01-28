@@ -14,20 +14,24 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import junit.framework.Assert;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.jboss.ejb3.examples.ch07.rsscache.spi.RssCacheCommonBusiness;
 import org.jboss.ejb3.examples.ch07.rsscache.spi.RssEntry;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.mortbay.jetty.Handler;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.handler.AbstractHandler;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.util.Callback;
+import org.eclipse.jetty.server.Handler.Abstract;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
 
 /**
  * Base tests for the RssCache @Singleton 
@@ -99,7 +103,7 @@ public abstract class RssCacheTestCaseBase
     * RSS file (Rome FeedFetcher doesn't support obtaining from 
     * file:/ URLs)
     */
-   @BeforeClass
+   @BeforeAll
    public static void startHttpServer()
    {
       // Start an Embedded HTTP Server
@@ -121,7 +125,7 @@ public abstract class RssCacheTestCaseBase
    /**
     * Creates the RSS feed file from the default mock template
     */
-   @BeforeClass
+   @BeforeAll
    public static void createRssFeedFile() throws Exception
    {
       writeToRssFeedFile(getMock15EntriesRssFile());
@@ -130,7 +134,7 @@ public abstract class RssCacheTestCaseBase
    /**
     * Shuts down and clears the Embedded HTTP Server
     */
-   @AfterClass
+   @AfterAll
    public static void shutdownHttpServer()
    {
       if (httpServer != null)
@@ -152,7 +156,7 @@ public abstract class RssCacheTestCaseBase
    /**
     * Removes the RSS feed file 
     */
-   @AfterClass
+   @AfterAll
    public static void deleteRssFeedFile() throws Exception
    {
       final File rssFile = getRssFeedFile();
@@ -233,9 +237,9 @@ public abstract class RssCacheTestCaseBase
    private void ensureExpectedEntries(final List<RssEntry> entries, final int expectedSize)
    {
       // Ensure they've been specified/initialized, and parsed out in proper size
-      Assert.assertNotNull("RSS Entries was either not initialized or is returning null", entries);
+      assertNotNull(entries, "RSS Entries was either not initialized or is returning null");
       final int actualSize = entries.size();
-      Assert.assertEquals("Wrong number of RSS entries parsed out from feed", expectedSize, actualSize);
+      assertEquals(expectedSize, actualSize, "Wrong number of RSS entries parsed out from feed");
       log.info("Got expected " + expectedSize + " RSS entries");
    }
 
@@ -341,11 +345,11 @@ public abstract class RssCacheTestCaseBase
    /**
     * Jetty Handler to serve a static character file from the web root
     */
-   private static class StaticFileHandler extends AbstractHandler implements Handler
+   private static class StaticFileHandler extends Abstract implements Handler
    {
       /*
        * (non-Javadoc)
-       * @see org.mortbay.jetty.Handler#handle(java.lang.String, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, int)
+       * @see org.eclipse.jetty.server.Handler#handle(java.lang.String, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, int)
        */
       public void handle(final String target, final HttpServletRequest request, final HttpServletResponse response,
             final int dispatch) throws IOException, ServletException
@@ -390,6 +394,12 @@ public abstract class RssCacheTestCaseBase
          reader.close();
          writer.close();
       }
+
+    @Override
+    public boolean handle(Request request, Response response, Callback callback) throws Exception {
+        // TODO Auto-generated method stub
+        return false;
+    }
    }
 
 }

@@ -31,7 +31,13 @@
 
   <!-- Dependencies -->
   <dependencies>
-  
+  		<dependency>
+			<groupId>jakarta.platform</groupId>
+			<artifactId>jakarta.jakartaee-api</artifactId>
+			<optional>true</optional> <!-- Don't export this, ever-->
+
+		</dependency>
+ 
   </dependencies>
 
 </project>
