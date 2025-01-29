@@ -23,11 +23,11 @@ package org.jboss.ejb3.examples.ch17.transactions.ejb;
 
 import java.util.Collection;
 
-import javax.ejb.Local;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
+import jakarta.ejb.Local;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
+import jakarta.ejb.TransactionManagement;
+import jakarta.ejb.TransactionManagementType;
 
 import org.jboss.ejb3.examples.ch17.transactions.entity.Account;
 import org.jboss.ejb3.examples.ch17.transactions.entity.User;

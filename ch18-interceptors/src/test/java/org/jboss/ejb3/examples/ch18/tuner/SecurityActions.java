@@ -38,7 +38,7 @@ class SecurityActions
    //-------------------------------------------------------------------------------||
 
    /**
-    * No external instanciation
+    * No external instantiation
     */
    private SecurityActions()
    {

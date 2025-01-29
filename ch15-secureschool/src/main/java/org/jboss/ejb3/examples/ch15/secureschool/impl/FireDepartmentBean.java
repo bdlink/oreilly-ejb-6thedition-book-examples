@@ -23,10 +23,10 @@ package org.jboss.ejb3.examples.ch15.secureschool.impl;
 
 import java.util.logging.Logger;
 
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RunAs;
-import javax.ejb.EJB;
-import javax.ejb.Singleton;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RunAs;
+import jakarta.ejb.EJB;
+import jakarta.ejb.Singleton;
 
 import org.jboss.ejb3.examples.ch15.secureschool.api.FireDepartmentLocalBusiness;
 import org.jboss.ejb3.examples.ch15.secureschool.api.SecureSchoolLocalBusiness;

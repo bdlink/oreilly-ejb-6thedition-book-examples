@@ -23,7 +23,7 @@ package org.jboss.ejb3.examples.ch18.tuner;
 
 import java.security.Principal;
 
-import javax.interceptor.InvocationContext;
+import jakarta.interceptor.InvocationContext;
 
 /**
  * Data object encapsulating the auditable properties behind an invocation

@@ -24,8 +24,8 @@ package org.jboss.ejb3.examples.ch18.tuner;
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.InvocationContext;
+import jakarta.interceptor.AroundInvoke;
+import jakarta.interceptor.InvocationContext;
 
 /**
  * Aspect which restricts access to Channel 2 unless

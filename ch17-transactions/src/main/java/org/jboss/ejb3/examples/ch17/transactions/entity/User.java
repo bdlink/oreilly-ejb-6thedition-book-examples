@@ -21,9 +21,9 @@
  */
 package org.jboss.ejb3.examples.ch17.transactions.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 
 import org.jboss.ejb3.examples.testsupport.entity.IdentityBase;
 

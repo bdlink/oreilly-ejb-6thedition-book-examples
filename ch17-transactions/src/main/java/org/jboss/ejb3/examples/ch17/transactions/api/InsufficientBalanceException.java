@@ -21,7 +21,7 @@
  */
 package org.jboss.ejb3.examples.ch17.transactions.api;
 
-import javax.ejb.ApplicationException;
+import jakarta.ejb.ApplicationException;
 
 /**
  * Exception thrown when attempting to invoke an operation that requires

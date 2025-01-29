@@ -24,16 +24,20 @@ package org.jboss.ejb3.examples.ch18.tuner;
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
-import javax.interceptor.InvocationContext;
+import jakarta.interceptor.InvocationContext;
 
-import junit.framework.TestCase;
 
 import org.jboss.ejb3.examples.ch18.tuner.Channel2AccessPolicy;
 import org.jboss.ejb3.examples.ch18.tuner.Channel2ClosedException;
 import org.jboss.ejb3.examples.ch18.tuner.Channel2Restrictor;
 import org.jboss.ejb3.examples.ch18.tuner.TunerLocalBusiness;
-import org.junit.Before;
-import org.junit.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
 
 /**
  * Tests to ensure that the {@link Channel2Restrictor}
@@ -76,7 +80,7 @@ public class Channel2RestrictorUnitTestCase
    /**
     * Creates the interceptor instance to be used in testing
     */
-   @Before
+   @BeforeEach
    public void createInterceptor()
    {
       interceptor = new Channel2Restrictor();
@@ -119,7 +123,7 @@ public class Channel2RestrictorUnitTestCase
       }
       catch (final Channel2ClosedException e)
       {
-         TestCase.fail("Should not have been blocked with: " + e);
+         fail("Should not have been blocked with: " + e);
       }
    }
 

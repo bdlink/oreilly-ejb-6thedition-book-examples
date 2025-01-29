@@ -27,20 +27,20 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import javax.ejb.EJBHome;
-import javax.ejb.EJBLocalHome;
-import javax.ejb.EJBLocalObject;
-import javax.ejb.EJBObject;
-import javax.ejb.SessionContext;
-import javax.ejb.TimerService;
-import javax.interceptor.InvocationContext;
-import javax.transaction.UserTransaction;
-import javax.xml.rpc.handler.MessageContext;
+import jakarta.ejb.EJBHome;
+import jakarta.ejb.EJBLocalHome;
+import jakarta.ejb.EJBLocalObject;
+import jakarta.ejb.EJBObject;
+import jakarta.ejb.SessionContext;
+import jakarta.ejb.TimerService;
+import jakarta.interceptor.InvocationContext;
+import jakarta.transaction.UserTransaction;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
 
 /**
  * Tests to ensure that the {@link CachingAuditor}
@@ -96,7 +96,7 @@ public class CachingInterceptorUnitTestCase
    /**
     * Creates the interceptor instance to be used in testing
     */
-   @Before
+   @BeforeEach
    public void createInterceptor()
    {
       interceptor = new CachingAuditor();
@@ -130,13 +130,6 @@ public class CachingInterceptorUnitTestCase
          }
 
          @Override
-         @SuppressWarnings("deprecation")
-         public boolean isCallerInRole(Identity arg0)
-         {
-            throw UNSUPPORTED;
-         }
-
-         @Override
          public UserTransaction getUserTransaction() throws IllegalStateException
          {
             throw UNSUPPORTED;
@@ -150,12 +143,6 @@ public class CachingInterceptorUnitTestCase
 
          @Override
          public boolean getRollbackOnly() throws IllegalStateException
-         {
-            throw UNSUPPORTED;
-         }
-
-         @Override
-         public Properties getEnvironment()
          {
             throw UNSUPPORTED;
          }
@@ -176,13 +163,6 @@ public class CachingInterceptorUnitTestCase
          public Principal getCallerPrincipal()
          {
             return PRINCIPAL;
-         }
-
-         @Override
-         @SuppressWarnings("deprecation")
-         public Identity getCallerIdentity()
-         {
-            throw UNSUPPORTED;
          }
 
          @Override
@@ -210,12 +190,6 @@ public class CachingInterceptorUnitTestCase
          }
 
          @Override
-         public MessageContext getMessageContext() throws IllegalStateException
-         {
-            throw UNSUPPORTED;
-         }
-
-         @Override
          public Map<String, Object> getContextData() {
             throw UNSUPPORTED;
          }
@@ -238,7 +212,7 @@ public class CachingInterceptorUnitTestCase
    public void testCache() throws Exception
    {
       // Ensure the cache is empty to start
-      TestCase.assertEquals("Cache should start empty", 0, CachingAuditor.getInvocations().size());
+      assertEquals(0, CachingAuditor.getInvocations().size(), "Cache should start empty");
 
       // Invoke
       final InvocationContext invocation = new MockInvocationContext(TunerLocalBusiness.class.getMethods()[0],
@@ -247,10 +221,10 @@ public class CachingInterceptorUnitTestCase
       interceptor.audit(invocation);
 
       // Test our invocation was cached properly
-      TestCase.assertEquals("Cache should have the first invocation", 1, CachingAuditor.getInvocations().size());
+      assertEquals(1, CachingAuditor.getInvocations().size(), "Cache should have the first invocation");
       final AuditedInvocation audit = CachingAuditor.getInvocations().get(0);
-      TestCase.assertEquals("Invocation cached was not the one that was invoked", invocation, audit.getContext());
-      TestCase.assertEquals("Invocation did not store the caller as expected", PRINCIPAL, audit.getCaller());
+      assertEquals(invocation, audit.getContext(), "Invocation cached was not the one that was invoked");
+      assertEquals(PRINCIPAL, audit.getCaller(), "Invocation did not store the caller as expected");
    }
 
 }

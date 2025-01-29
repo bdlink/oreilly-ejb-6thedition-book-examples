@@ -30,26 +30,29 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
-import javax.ejb.EJB;
-import javax.ejb.EJBAccessException;
-import javax.ejb.SessionContext;
-import javax.inject.Inject;
+import jakarta.ejb.EJB;
+import jakarta.ejb.EJBAccessException;
+import jakarta.ejb.SessionContext;
+import jakarta.inject.Inject;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.prototyping.context.api.ArquillianContext;
+import org.jboss.arquillian.junit5.ArquillianExtension;
+//import org.jboss.arquillian.prototyping.context.api.ArquillianContext;
 import org.jboss.ejb3.examples.ch15.secureschool.api.FireDepartmentLocalBusiness;
 import org.jboss.ejb3.examples.ch15.secureschool.api.SchoolClosedException;
 import org.jboss.ejb3.examples.ch15.secureschool.api.SecureSchoolLocalBusiness;
 import org.jboss.ejb3.examples.ch15.secureschool.impl.SecureSchoolBean;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Test Cases to ensure the SecureSchoolEJB
@@ -59,8 +62,8 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
  * @version $Revision: $
  */
-@RunWith(Arquillian.class)
-@Ignore //TODO Support OpenEJB again w/ new ARQ version
+@ExtendWith(ArquillianExtension.class)
+@Disabled //TODO Support OpenEJB again w/ new ARQ version
 public class SecureSchoolIntegrationTest
 {
 
@@ -155,12 +158,12 @@ public class SecureSchoolIntegrationTest
    /**
     * Ensures that an unauthenticated user cannot open the front door
     */
-   @Test(expected = EJBAccessException.class)
+   @Test
    public void unauthenticatedUserCannotOpenFrontDoor() throws NamingException
    {
-
-      // Try to open the front door before we've authenticated; should fail
-      unauthenticatedSchool.openFrontDoor();
+       // Try to open the front door before we've authenticated; should fail
+       assertThrows(EJBAccessException.class,
+               () -> {unauthenticatedSchool.openFrontDoor();} );   
    }
 
    /**
@@ -302,13 +305,13 @@ public class SecureSchoolIntegrationTest
          school.close();
 
          // Test
-         Assert.assertFalse("School should now be closed", school.isOpen());
+         assertFalse(school.isOpen(), "School should now be closed");
 
          // Reset the school to open for subsequent tests
          school.open();
 
          // Test
-         Assert.assertTrue("School should now be open", school.isOpen());
+         assertTrue(school.isOpen(), "School should now be open");
       }
       finally
       {
@@ -325,7 +328,7 @@ public class SecureSchoolIntegrationTest
    {
 
       // See if school is open
-      Assert.assertTrue("Unauthenticated user should see that school is open", unauthenticatedSchool.isOpen());
+      assertTrue(unauthenticatedSchool.isOpen(), "Unauthenticated user should see that school is open");
    }
 
    /**
@@ -355,7 +358,7 @@ public class SecureSchoolIntegrationTest
          context.close();
 
          // Test that we're closed
-         Assert.assertFalse("School should now be closed", school.isOpen());
+         assertFalse(school.isOpen(), "School should now be closed");
 
          // Now try to open the front doors as a student.  We do this in another Thread
          // because OpenEJB will associate the security context with this
@@ -410,7 +413,7 @@ public class SecureSchoolIntegrationTest
          school.open();
 
          // Test
-         Assert.assertTrue("School should now be open", school.isOpen());
+         assertTrue(school.isOpen(), "School should now be open");
 
          // Clean up, closing the context to log out
          context.close();
@@ -426,7 +429,7 @@ public class SecureSchoolIntegrationTest
    {
 
       // First check that school's open
-      Assert.assertTrue("School should be open to start the test", unauthenticatedSchool.isOpen());
+      assertTrue(unauthenticatedSchool.isOpen(), "School should be open to start the test");
 
       // Ensure we can't close the school directly (we don't have access)
       boolean gotAccessException = false;
@@ -440,13 +443,13 @@ public class SecureSchoolIntegrationTest
          log.info("We can't close the school on our own, make an emergency");
          gotAccessException = true;
       }
-      Assert.assertTrue("We shouldn't be able to close school directly", gotAccessException);
+      assertTrue(gotAccessException, "We shouldn't be able to close school directly");
 
       // Now declare an emergency via the fire department
       fireDepartment.declareEmergency();
 
       // The school should now be closed, even though we don't have rights to do that directly on our own.
-      Assert.assertFalse("School should be closed after emergency was declared", unauthenticatedSchool.isOpen());
+      assertFalse(unauthenticatedSchool.isOpen(), "School should be closed after emergency was declared");
 
       // Reset the school to open
       // Cleanup and open the school for other tests
@@ -459,7 +462,7 @@ public class SecureSchoolIntegrationTest
          school.open();
 
          // Test
-         Assert.assertTrue("School should now be open", school.isOpen());
+         assertTrue(school.isOpen(), "School should now be open");
       }
       finally
       {

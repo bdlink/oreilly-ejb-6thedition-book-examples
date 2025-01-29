@@ -25,13 +25,11 @@ import java.math.BigDecimal;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
-import javax.ejb.EJB;
-import javax.persistence.EntityManager;
-
-import junit.framework.Assert;
+import jakarta.ejb.EJB;
+import jakarta.persistence.EntityManager;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.ejb3.examples.ch17.transactions.api.BankLocalBusiness;
 import org.jboss.ejb3.examples.ch17.transactions.api.BlackjackGameLocalBusiness;
 import org.jboss.ejb3.examples.ch17.transactions.ejb.DbInitializerBean;
@@ -49,9 +47,12 @@ import org.jboss.ejb3.examples.testsupport.txwrap.TaskExecutionException;
 import org.jboss.ejb3.examples.testsupport.txwrap.TxWrappingLocalBusiness;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Test cases to ensure that the Blackjack Game
@@ -61,7 +62,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
  * @version $Revision: $
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class TransactionalBlackjackGameIntegrationTest
 {
 
@@ -133,7 +134,7 @@ public class TransactionalBlackjackGameIntegrationTest
     * after each run
     * @throws Exception
     */
-   @After
+   @AfterEach
    public void refreshWithDefaultData() throws Exception
    {
       dbInitializer.refreshWithDefaultData();
@@ -192,8 +193,8 @@ public class TransactionalBlackjackGameIntegrationTest
       {
          gotExpectedException = true;
       }
-      Assert.assertTrue("Did not receive expected exception as signaled from the test; was not rolled back",
-            gotExpectedException);
+      assertTrue(gotExpectedException,
+              "Did not receive expected exception as signaled from the test; was not rolled back");
 
       // Now that we've checked the transfer succeeded from within the Tx, then we threw an
       // exception before committed, ensure the Tx rolled back and the transfer was reverted from the 
@@ -229,7 +230,7 @@ public class TransactionalBlackjackGameIntegrationTest
          // Expected
          gotForcedException = true;
       }
-      Assert.assertTrue("Did not obtain the test exception as expected", gotForcedException);
+      assertTrue(gotForcedException, "Did not obtain the test exception as expected");
 
       // Now we've ensured that from inside the calling Tx we saw the account balances 
       // were as expected.  But we rolled back that enclosing Tx, so ensure that the outcome
@@ -275,8 +276,8 @@ public class TransactionalBlackjackGameIntegrationTest
          final BigDecimal expectedBalance = originalBalance.add(expectedGains);
 
          // Assert
-         Assert.assertTrue("Balance after all bets was not as expected " + expectedBalance + " but was "
-               + afterBetsBalance, expectedBalance.compareTo(afterBetsBalance) == 0);
+         assertTrue(expectedBalance.compareTo(afterBetsBalance) == 0, "Balance after all bets was not as expected " + expectedBalance + " but was "
+               + afterBetsBalance);
 
          // Return
          return null;
@@ -365,7 +366,7 @@ public class TransactionalBlackjackGameIntegrationTest
       public Void call() throws Exception
       {
          final Account account = emHook.getEntityManager().find(Account.class, accountId);
-         Assert.assertTrue("Balance was not as expected", expectedBalance.compareTo(account.getBalance()) == 0);
+         assertTrue(expectedBalance.compareTo(account.getBalance()) == 0, "Balance was not as expected");
          return null;
       }
 

@@ -21,10 +21,11 @@
  */
 package org.jboss.ejb3.examples.ch18.tuner;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import javax.interceptor.InvocationContext;
+import jakarta.interceptor.InvocationContext;
 
 /**
  * {@link InvocationContext} implementation which throws {@link UnsupportedOperationException}
@@ -122,4 +123,10 @@ class MockInvocationContext implements InvocationContext
    public Object getTimer() {
       throw new UnsupportedOperationException(MSG_UNSUPPORTED);
    }
+
+@Override
+public Constructor<?> getConstructor() {
+    // TODO Auto-generated method stub
+    return null;
+}
 }

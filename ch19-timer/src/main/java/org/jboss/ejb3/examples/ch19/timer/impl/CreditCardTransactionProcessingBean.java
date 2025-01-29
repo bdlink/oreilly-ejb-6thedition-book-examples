@@ -27,19 +27,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.annotation.Resource;
-import javax.ejb.ConcurrencyManagement;
-import javax.ejb.ConcurrencyManagementType;
-import javax.ejb.Local;
-import javax.ejb.Lock;
-import javax.ejb.LockType;
-import javax.ejb.Schedule;
-import javax.ejb.ScheduleExpression;
-import javax.ejb.SessionContext;
-import javax.ejb.Singleton;
-import javax.ejb.Timeout;
-import javax.ejb.Timer;
-import javax.ejb.TimerService;
+import jakarta.annotation.Resource;
+import jakarta.ejb.ConcurrencyManagement;
+import jakarta.ejb.ConcurrencyManagementType;
+import jakarta.ejb.Local;
+import jakarta.ejb.Lock;
+import jakarta.ejb.LockType;
+import jakarta.ejb.Schedule;
+import jakarta.ejb.ScheduleExpression;
+import jakarta.ejb.SessionContext;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Timeout;
+import jakarta.ejb.Timer;
+import jakarta.ejb.TimerService;
 
 import org.jboss.ejb3.examples.ch19.timer.api.CreditCardTransaction;
 import org.jboss.ejb3.examples.ch19.timer.api.CreditCardTransactionProcessingLocalBusiness;
@@ -184,7 +184,7 @@ public class CreditCardTransactionProcessingBean implements CreditCardTransactio
 
    /**
     * {@inheritDoc}
-    * @see org.jboss.ejb3.examples.ch19.timer.api.CreditCardTransactionProcessingLocalBusiness#scheduleProcessing(javax.ejb.ScheduleExpression)
+    * @see org.jboss.ejb3.examples.ch19.timer.api.CreditCardTransactionProcessingLocalBusiness#scheduleProcessing(jakarta.ejb.ScheduleExpression)
     */
    @Override
    public Date scheduleProcessing(final ScheduleExpression expression) throws IllegalArgumentException

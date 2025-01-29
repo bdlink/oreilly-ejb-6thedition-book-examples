@@ -24,10 +24,10 @@ package org.jboss.ejb3.examples.ch17.transactions.entity;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 
 import org.jboss.ejb3.examples.ch17.transactions.api.InsufficientBalanceException;
 import org.jboss.ejb3.examples.testsupport.entity.IdentityBase;

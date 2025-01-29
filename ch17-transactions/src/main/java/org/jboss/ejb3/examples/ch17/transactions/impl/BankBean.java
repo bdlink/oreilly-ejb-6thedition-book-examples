@@ -24,13 +24,13 @@ package org.jboss.ejb3.examples.ch17.transactions.impl;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
 
-import javax.ejb.Local;
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
+import jakarta.ejb.Local;
+import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 
 import org.jboss.ejb3.examples.ch17.transactions.api.BankLocalBusiness;
 import org.jboss.ejb3.examples.ch17.transactions.api.InsufficientBalanceException;

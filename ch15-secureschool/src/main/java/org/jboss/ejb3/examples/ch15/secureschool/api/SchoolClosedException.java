@@ -21,8 +21,8 @@
  */
 package org.jboss.ejb3.examples.ch15.secureschool.api;
 
-import javax.ejb.ApplicationException;
-import javax.ejb.EJBAccessException;
+import jakarta.ejb.ApplicationException;
+import jakarta.ejb.EJBAccessException;
 
 import org.jboss.ejb3.examples.ch15.secureschool.impl.Roles;
 

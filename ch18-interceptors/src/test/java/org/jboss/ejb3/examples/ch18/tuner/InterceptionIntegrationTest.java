@@ -26,21 +26,24 @@ import java.io.InputStream;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.logging.Logger;
 
-import javax.ejb.EJB;
-import javax.ejb.EJBException;
-import javax.interceptor.Interceptors;
+import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
+import jakarta.interceptor.Interceptors;
 import javax.naming.NamingException;
 
-import junit.framework.TestCase;
+
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.After;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Integration test ensuring that an EJB with {@link Interceptors} 
@@ -48,8 +51,8 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
  */
-@RunWith(Arquillian.class)
-@Ignore //TODO Re-enable when EJB security in AS7 is available
+@ExtendWith(ArquillianExtension.class)
+@Disabled //TODO Re-enable when EJB security in AS7 is available
 public class InterceptionIntegrationTest
 {
 
@@ -90,7 +93,7 @@ public class InterceptionIntegrationTest
    /**
     * Cleanup
     */
-   @After
+   @AfterEach
    public void clearInvocationsAfterTest()
    {
       // Clean up
@@ -109,18 +112,18 @@ public class InterceptionIntegrationTest
    public void testCachingInterception() throws NamingException, IOException
    {
       // Ensure no invocations intercepted yet
-      TestCase.assertEquals("No invocations should have yet been intercepted", 0, CachingAuditor.getInvocations()
-            .size());
+      assertEquals(0, CachingAuditor.getInvocations().size(), 
+              "No invocations should have yet been intercepted");
 
       // Invoke
       final int channel = 1;
       final InputStream content = bean.getChannel(channel);
 
       // Test the response is as expected
-      TestCase.assertEquals("Did not obtain expected response", channel, content.read());
+      assertEquals(channel, content.read(), "Did not obtain expected response");
 
       // Test the invocation was intercepted 
-      TestCase.assertEquals("The invocation should have been intercepted", 1, CachingAuditor.getInvocations().size());
+      assertEquals(1, CachingAuditor.getInvocations().size(), "The invocation should have been intercepted");
    }
 
    /**
@@ -148,7 +151,7 @@ public class InterceptionIntegrationTest
       }
 
       // Fail if we reach here
-      TestCase.fail("Request should have been blocked");
+      fail("Request should have been blocked");
    }
 
    /**
@@ -165,6 +168,7 @@ public class InterceptionIntegrationTest
       final InputStream stream = bean.getChannel(channel);
 
       // Test
-      TestCase.assertEquals("Unexpected content obtained from channel " + channel, channel, stream.read());
+      assertEquals(channel, stream.read(),
+              "Unexpected content obtained from channel " + channel);
    }
 }

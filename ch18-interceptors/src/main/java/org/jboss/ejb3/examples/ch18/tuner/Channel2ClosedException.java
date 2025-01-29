@@ -21,7 +21,7 @@
  */
 package org.jboss.ejb3.examples.ch18.tuner;
 
-import javax.ejb.ApplicationException;
+import jakarta.ejb.ApplicationException;
 
 /**
  * Denotes that Channel 2 is not currently available for viewing

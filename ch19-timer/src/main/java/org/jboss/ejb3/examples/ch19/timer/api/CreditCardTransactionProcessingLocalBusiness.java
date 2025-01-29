@@ -24,8 +24,8 @@ package org.jboss.ejb3.examples.ch19.timer.api;
 import java.util.Date;
 import java.util.List;
 
-import javax.ejb.ScheduleExpression;
-import javax.ejb.Timer;
+import jakarta.ejb.ScheduleExpression;
+import jakarta.ejb.Timer;
 
 /**
  * Contract of a service capable of storing a series
