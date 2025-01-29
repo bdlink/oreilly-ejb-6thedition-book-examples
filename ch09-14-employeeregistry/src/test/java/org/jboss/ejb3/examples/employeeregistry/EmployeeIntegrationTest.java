@@ -27,17 +27,17 @@ import java.util.Date;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
-import javax.ejb.EJB;
-import javax.persistence.EmbeddedId;
-import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.IdClass;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.ejb.EJB;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.ejb3.examples.employeeregistry.ch09.entitymanager.SimpleEmployee;
 import org.jboss.ejb3.examples.employeeregistry.ch10.mapping.EmbeddedEmployeePK;
 import org.jboss.ejb3.examples.employeeregistry.ch10.mapping.EmployeeType;
@@ -63,11 +63,19 @@ import org.jboss.ejb3.examples.testsupport.txwrap.TaskExecutionException;
 import org.jboss.ejb3.examples.testsupport.txwrap.TxWrappingLocalBusiness;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
 
 /**
  * Tests to ensure that we can do simple CRUD operations 
@@ -77,7 +85,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
  * @version $Revision: $
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class EmployeeIntegrationTest
 {
    //-------------------------------------------------------------------------------------||
@@ -150,7 +158,7 @@ public class EmployeeIntegrationTest
    /**
     * Manually looks up EJBs in JNDI and assigns them
     */
-   @Before
+   @BeforeEach
    public void injectEjbsAndClearDB() throws Throwable
    {
       // Clear all employees before running, just in case
@@ -160,7 +168,7 @@ public class EmployeeIntegrationTest
    /**
     * Resets all entity callbacks
     */
-   @Before
+   @BeforeEach
    public void clearEntityCallbacks()
    {
       EventTracker.reset();
@@ -170,7 +178,7 @@ public class EmployeeIntegrationTest
     * Issues a deletion to remove all employees from persistent storage
     * @throws Throwable
     */
-   @After
+   @AfterEach
    public void clearAllEmployees() throws Throwable
    {
       // Clear the DB of all Employees
@@ -240,11 +248,11 @@ public class EmployeeIntegrationTest
 
                // Now first check if any employees are found in the underlying persistent
                // storage (shouldn't be)
-               Assert.assertNull("Employees should not have been added to the EM yet", em.find(SimpleEmployee.class,
-                     ID_DAVE));
+               assertNull(em.find(SimpleEmployee.class, ID_DAVE), 
+                       "Employees should not have been added to the EM yet");
 
                // Check if the object is managed (shouldn't be) 
-               Assert.assertFalse("Employee should not be managed yet", em.contains(josh));
+               assertFalse(em.contains(josh), "Employee should not be managed yet");
 
                // Now persist the employees
                em.persist(dave);
@@ -253,7 +261,7 @@ public class EmployeeIntegrationTest
                log.info("Added: " + rick + dave + josh);
 
                // The employees should be managed now
-               Assert.assertTrue("Employee should be managed now, after call to persist", em.contains(josh));
+               assertTrue(em.contains(josh), "Employee should be managed now, after call to persist");
 
                // Return
                return null;
@@ -300,7 +308,7 @@ public class EmployeeIntegrationTest
                em.merge(dave);
 
                // Ensure we see the name change
-               Assert.assertEquals("Employee Dave's name should have been changed", NAME_DAVE_NEW, dave.getName());
+               assertEquals(NAME_DAVE_NEW, dave.getName(), "Employee Dave's name should have been changed");
 
                // Now we'll detach Dave from the EM, this makes the object no longer managed
                em.detach(dave);
@@ -333,8 +341,8 @@ public class EmployeeIntegrationTest
                log.info("Lookup of Dave after we changed his name on a detached instance: " + dave);
 
                // Ensure that the last name change we gave to Dave did not take affect
-               Assert
-                     .assertEquals("Detached object values should not have been flushed", NAME_DAVE_NEW, dave.getName());
+               assertEquals(NAME_DAVE_NEW, dave.getName(), 
+                       "Detached object values should not have been flushed");
 
                // Return
                return null;
@@ -379,7 +387,7 @@ public class EmployeeIntegrationTest
                final SimpleEmployee rick = em.find(SimpleEmployee.class, ID_RICK);
 
                // Assert
-               Assert.assertNull("Rick should have been removed from the DB", rick);
+               assertNull(rick, "Rick should have been removed from the DB");
 
                // Return
                return null;
@@ -419,15 +427,15 @@ public class EmployeeIntegrationTest
                      "Andrew Lee Rubinger");
 
                // Ensure we have no ID now
-               Assert.assertNull("Primary key should not be set yet", alrubinger.getId());
+               assertNull(alrubinger.getId(), "Primary key should not be set yet");
 
                // Persist
                emHook.getEntityManager().persist(alrubinger);
 
                // Now show that JPA gave us a primary key as generated
                final Long id = alrubinger.getId();
-               Assert.assertNotNull("Persisting an entity with PK " + GeneratedValue.class.getName()
-                     + " should be created", id);
+               assertNotNull(id, "Persisting an entity with PK " + GeneratedValue.class.getName()
+                     + " should be created");
                log.info("Persisted: " + alrubinger);
 
                // Return
@@ -448,7 +456,7 @@ public class EmployeeIntegrationTest
                      EmployeeWithMappedSuperClassId.class, id);
 
                // Ensure found
-               Assert.assertNotNull("Employee should be able to be looked up by PK", employee);
+               assertNotNull(employee, "Employee should be able to be looked up by PK");
 
                // Return
                return null;
@@ -500,8 +508,7 @@ public class EmployeeIntegrationTest
                final EmployeeWithExternalCompositePK roundtrip = em.find(EmployeeWithExternalCompositePK.class, pk);
 
                // Ensure found
-               Assert.assertNotNull("Should have been able to look up record via a custom PK composite class",
-                     roundtrip);
+               assertNotNull(roundtrip, "Should have been able to look up record via a custom PK composite class");
 
                // Return
                return null;
@@ -552,8 +559,7 @@ public class EmployeeIntegrationTest
                final EmployeeWithEmbeddedPK roundtrip = em.find(EmployeeWithEmbeddedPK.class, pk);
 
                // Ensure found
-               Assert
-                     .assertNotNull("Should have been able to look up record via a custom embedded PK class", roundtrip);
+               assertNotNull(roundtrip, "Should have been able to look up record via a custom embedded PK class");
 
                // Return
                return null;
@@ -632,15 +638,15 @@ public class EmployeeIntegrationTest
                obtainedSince.setTime(roundtrip.getSince());
 
                // Assert all values are as expected
-               Assert.assertEquals("Binary object was not mapped properly", image[0], roundtrip.getImage()[0]);
-               Assert.assertEquals("Temporal value was not mapped properly", suppliedSince.get(Calendar.YEAR),
-                     obtainedSince.get(Calendar.YEAR));
-               Assert.assertEquals("Temporal value was not mapped properly", suppliedSince.get(Calendar.MONTH),
-                     obtainedSince.get(Calendar.MONTH));
-               Assert.assertEquals("Temporal value was not mapped properly", suppliedSince.get(Calendar.DATE),
-                     obtainedSince.get(Calendar.DATE));
-               Assert.assertEquals("Enumerated value was not as expected", type, roundtrip.getType());
-               Assert.assertNull("Transient property should not have been persisted", roundtrip.getCurrentAssignment());
+               assertEquals(image[0], roundtrip.getImage()[0], "Binary object was not mapped properly");
+               assertEquals(suppliedSince.get(Calendar.YEAR),
+                     obtainedSince.get(Calendar.YEAR), "Temporal value was not mapped properly");
+               assertEquals(suppliedSince.get(Calendar.MONTH),
+                     obtainedSince.get(Calendar.MONTH), "Temporal value was not mapped properly");
+               assertEquals(suppliedSince.get(Calendar.DATE),
+                     obtainedSince.get(Calendar.DATE), "Temporal value was not mapped properly");
+               assertEquals(type, roundtrip.getType(), "Enumerated value was not as expected");
+               assertNull(roundtrip.getCurrentAssignment(), "Transient property should not have been persisted");
 
                // Return
                return null;
@@ -711,7 +717,7 @@ public class EmployeeIntegrationTest
                final Address persistedAddress = roundtripEmployee.getAddress();
 
                // Ensure equal
-               Assert.assertEquals("Persisted address association was not as expected", address, persistedAddress);
+               assertEquals(address, persistedAddress, "Persisted address association was not as expected");
 
                // Clean up the association so we can remove
                roundtripEmployee.setAddress(null);
@@ -801,8 +807,8 @@ public class EmployeeIntegrationTest
                log.info("Computer " + computerRoundtrip + " has owner " + ownerOfComputer);
 
                // Assert all's as expected
-               Assert.assertEquals("Computer of employee was not as expected ", computer, computerRoundtrip);
-               Assert.assertEquals("Owner of computer was not as expected ", carloDeWolf, ownerOfComputer);
+               assertEquals(computer, computerRoundtrip, "Computer of employee was not as expected ");
+               assertEquals(carloDeWolf, ownerOfComputer, "Owner of computer was not as expected ");
 
                // Clean up the associations so we can remove
                ownerOfComputer.setComputer(null);
@@ -886,9 +892,9 @@ public class EmployeeIntegrationTest
 
                // Assert all's as expected
                final String assertionError = "Phones were not associated with the employee as expected";
-               Assert.assertEquals(assertionError, 2, phones.size());
-               Assert.assertTrue(assertionError, phones.contains(phone1));
-               Assert.assertTrue(assertionError, phones.contains(phone2));
+               assertEquals(2, phones.size(), assertionError);
+               assertTrue(phones.contains(phone1), assertionError);
+               assertTrue(phones.contains(phone2), assertionError);
 
                // Clean up the associations so we can remove things
                jaikiranRoundtrip.getPhones().clear();
@@ -974,13 +980,13 @@ public class EmployeeIntegrationTest
 
                // Assert all's as expected
                final String assertionMessage = "The Employee Manager/Reports relationship was not as expected";
-               Assert.assertEquals(assertionMessage, 3, peonsForManager.size());
-               Assert.assertTrue(assertionMessage, peonsForManager.contains(alrubinger));
-               Assert.assertTrue(assertionMessage, peonsForManager.contains(carloDeWolf));
-               Assert.assertTrue(assertionMessage, peonsForManager.contains(jaikiranPai));
-               Assert.assertEquals(assertionMessage, bigD, alrubinger.getManager());
-               Assert.assertEquals(assertionMessage, bigD, carloDeWolf.getManager());
-               Assert.assertEquals(assertionMessage, bigD, jaikiranPai.getManager());
+               assertEquals(3, peonsForManager.size(), assertionMessage);
+               assertTrue(peonsForManager.contains(alrubinger), assertionMessage);
+               assertTrue(peonsForManager.contains(carloDeWolf), assertionMessage);
+               assertTrue(peonsForManager.contains(jaikiranPai), assertionMessage);
+               assertEquals(bigD, alrubinger.getManager(), assertionMessage);
+               assertEquals(bigD, carloDeWolf.getManager(), assertionMessage);
+               assertEquals(bigD, jaikiranPai.getManager(), assertionMessage);
 
                // Clean up the associations so we can remove things
                for (final Employee peon : peonsForManager)
@@ -1060,8 +1066,8 @@ public class EmployeeIntegrationTest
 
                // Ensure all's as expected
                final String assertionMessage = "Primary contact was not assigned as expected";
-               Assert.assertEquals(assertionMessage, bstansberry, jgreeneRoundtrip.getPrimaryContact());
-               Assert.assertEquals(assertionMessage, bstansberry, bobmcwRoundtrip.getPrimaryContact());
+               assertEquals(bstansberry, jgreeneRoundtrip.getPrimaryContact(), assertionMessage);
+               assertEquals(bstansberry, bobmcwRoundtrip.getPrimaryContact(), assertionMessage);
 
                // Clean up the associations so we can remove things
                jgreeneRoundtrip.setPrimaryContact(null);
@@ -1141,10 +1147,10 @@ public class EmployeeIntegrationTest
 
                // Ensure all's as expected
                final String assertionMessage = "Task owners were not assigned as expected";
-               Assert.assertTrue(assertionMessage, task1Roundtrip.getOwners().contains(smarlow));
-               Assert.assertTrue(assertionMessage, task1Roundtrip.getOwners().contains(jpederse));
-               Assert.assertTrue(assertionMessage, task2Roundtrip.getOwners().contains(smarlow));
-               Assert.assertTrue(assertionMessage, task2Roundtrip.getOwners().contains(jpederse));
+               assertTrue(task1Roundtrip.getOwners().contains(smarlow), assertionMessage);
+               assertTrue(task1Roundtrip.getOwners().contains(jpederse), assertionMessage);
+               assertTrue(task2Roundtrip.getOwners().contains(smarlow), assertionMessage);
+               assertTrue(task2Roundtrip.getOwners().contains(jpederse), assertionMessage);
 
                // Clean up the associations so we can remove things
                task1Roundtrip.getOwners().clear();
@@ -1237,18 +1243,18 @@ public class EmployeeIntegrationTest
 
                // Ensure all's as expected
                final String assertionMessage = "Team members were not assigned as expected";
-               Assert.assertTrue(assertionMessage, seamRoundtrip.getMembers().contains(pmuir));
-               Assert.assertTrue(assertionMessage, seamRoundtrip.getMembers().contains(aslak));
-               Assert.assertTrue(assertionMessage, seamRoundtrip.getMembers().contains(dallen));
-               Assert.assertTrue(assertionMessage, arquillianRoundtrip.getMembers().contains(pmuir));
-               Assert.assertTrue(assertionMessage, arquillianRoundtrip.getMembers().contains(aslak));
-               Assert.assertTrue(assertionMessage, arquillianRoundtrip.getMembers().contains(dallen));
-               Assert.assertTrue(assertionMessage, dallenRoundtrip.getTeams().contains(seamRoundtrip));
-               Assert.assertTrue(assertionMessage, dallenRoundtrip.getTeams().contains(arquillianRoundtrip));
-               Assert.assertTrue(assertionMessage, pmuirRoundtrip.getTeams().contains(seamRoundtrip));
-               Assert.assertTrue(assertionMessage, pmuirRoundtrip.getTeams().contains(arquillianRoundtrip));
-               Assert.assertTrue(assertionMessage, aslakRoundtrip.getTeams().contains(seamRoundtrip));
-               Assert.assertTrue(assertionMessage, aslakRoundtrip.getTeams().contains(arquillianRoundtrip));
+               assertTrue(seamRoundtrip.getMembers().contains(pmuir), assertionMessage);
+               assertTrue(seamRoundtrip.getMembers().contains(aslak), assertionMessage);
+               assertTrue(seamRoundtrip.getMembers().contains(dallen), assertionMessage);
+               assertTrue(arquillianRoundtrip.getMembers().contains(pmuir), assertionMessage);
+               assertTrue(arquillianRoundtrip.getMembers().contains(aslak), assertionMessage);
+               assertTrue(arquillianRoundtrip.getMembers().contains(dallen), assertionMessage);
+               assertTrue(dallenRoundtrip.getTeams().contains(seamRoundtrip), assertionMessage);
+               assertTrue(dallenRoundtrip.getTeams().contains(arquillianRoundtrip), assertionMessage);
+               assertTrue(pmuirRoundtrip.getTeams().contains(seamRoundtrip), assertionMessage);
+               assertTrue(pmuirRoundtrip.getTeams().contains(arquillianRoundtrip), assertionMessage);
+               assertTrue(aslakRoundtrip.getTeams().contains(seamRoundtrip), assertionMessage);
+               assertTrue(aslakRoundtrip.getTeams().contains(arquillianRoundtrip), assertionMessage);
 
                // Clean up the associations so we can remove things
                aslakRoundtrip.getTeams().clear();
@@ -1279,13 +1285,13 @@ public class EmployeeIntegrationTest
    {
       // Precondition checks
       final String preconditionMessage = "Test setup is in error";
-      Assert.assertFalse(preconditionMessage, EventTracker.postLoad);
-      Assert.assertFalse(preconditionMessage, EventTracker.postPersist);
-      Assert.assertFalse(preconditionMessage, EventTracker.postRemove);
-      Assert.assertFalse(preconditionMessage, EventTracker.postUpdate);
-      Assert.assertFalse(preconditionMessage, EventTracker.prePersist);
-      Assert.assertFalse(preconditionMessage, EventTracker.preRemove);
-      Assert.assertFalse(preconditionMessage, EventTracker.preUpdate);
+      assertFalse(EventTracker.postLoad, preconditionMessage);
+      assertFalse(EventTracker.postPersist, preconditionMessage);
+      assertFalse(EventTracker.postRemove, preconditionMessage);
+      assertFalse(EventTracker.postUpdate, preconditionMessage);
+      assertFalse(EventTracker.prePersist, preconditionMessage);
+      assertFalse(EventTracker.preRemove, preconditionMessage);
+      assertFalse(EventTracker.preUpdate, preconditionMessage);
 
       // Create a new employee
       final EntityListenerEmployee employee = new EntityListenerEmployee();
@@ -1321,13 +1327,13 @@ public class EmployeeIntegrationTest
       
       // Assert events fired
       final String postconditionMessage = "Missing event fired";
-      Assert.assertTrue(postconditionMessage, EventTracker.postLoad);
-      Assert.assertTrue(postconditionMessage, EventTracker.postPersist);
-      Assert.assertTrue(postconditionMessage, EventTracker.postRemove);
-      Assert.assertTrue(postconditionMessage, EventTracker.postUpdate);
-      Assert.assertTrue(postconditionMessage, EventTracker.prePersist);
-      Assert.assertTrue(postconditionMessage, EventTracker.preRemove);
-      Assert.assertTrue(postconditionMessage, EventTracker.preUpdate);
+      assertTrue(EventTracker.postLoad, postconditionMessage);
+      assertTrue(EventTracker.postPersist, postconditionMessage);
+      assertTrue(EventTracker.postRemove, postconditionMessage);
+      assertTrue(EventTracker.postUpdate, postconditionMessage);
+      assertTrue(EventTracker.prePersist, postconditionMessage);
+      assertTrue(EventTracker.preRemove, postconditionMessage);
+      assertTrue(EventTracker.preUpdate, postconditionMessage);
    }
 
    /**
@@ -1359,7 +1365,7 @@ public class EmployeeIntegrationTest
                   .getSingleResult();
 
             // Test obtained as expected
-            Assert.assertEquals("Employee from JPA QL Query should equal the record added", employee, roundtrip);
+            assertEquals(employee, roundtrip, "Employee from JPA QL Query should equal the record added");
 
             // Return
             return null;
@@ -1398,7 +1404,7 @@ public class EmployeeIntegrationTest
             final SimpleEmployee roundtrip = (SimpleEmployee) em.createQuery(query).getSingleResult();
 
             // Test obtained as expected
-            Assert.assertEquals("Employee from Criteria API Query should equal the record added", employee, roundtrip);
+            assertEquals(employee, roundtrip, "Employee from Criteria API Query should equal the record added");
 
             // Return
             return null;

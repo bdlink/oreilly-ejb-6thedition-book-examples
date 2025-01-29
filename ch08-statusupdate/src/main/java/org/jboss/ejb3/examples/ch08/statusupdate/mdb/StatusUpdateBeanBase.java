@@ -24,10 +24,10 @@ package org.jboss.ejb3.examples.ch08.statusupdate.mdb;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.ObjectMessage;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.MessageListener;
+import jakarta.jms.ObjectMessage;
 
 import org.jboss.ejb3.examples.ch08.statusupdate.api.StatusUpdate;
 
@@ -68,7 +68,7 @@ public abstract class StatusUpdateBeanBase implements MessageListener
 
    /**
     * {@inheritDoc}
-    * @see javax.jms.MessageListener#onMessage(javax.jms.Message)
+    * @see jakarta.jms.MessageListener#onMessage(javax.jms.Message)
     */
    @Override
    public void onMessage(final Message message)

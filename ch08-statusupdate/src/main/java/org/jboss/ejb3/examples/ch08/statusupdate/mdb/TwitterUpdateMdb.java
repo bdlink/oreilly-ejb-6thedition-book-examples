@@ -23,8 +23,8 @@ package org.jboss.ejb3.examples.ch08.statusupdate.mdb;
 
 import java.util.logging.Logger;
 
-import javax.annotation.PostConstruct;
-import javax.jms.MessageListener;
+import jakarta.annotation.PostConstruct;
+import jakarta.jms.MessageListener;
 
 import org.jboss.ejb3.examples.ch08.statusupdate.api.StatusUpdate;
 

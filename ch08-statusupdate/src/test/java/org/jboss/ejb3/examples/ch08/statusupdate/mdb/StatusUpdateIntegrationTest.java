@@ -24,27 +24,29 @@ package org.jboss.ejb3.examples.ch08.statusupdate.mdb;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import javax.jms.Message;
-import javax.jms.ObjectMessage;
-import javax.jms.Topic;
-import javax.jms.TopicConnection;
-import javax.jms.TopicConnectionFactory;
-import javax.jms.TopicPublisher;
-import javax.jms.TopicSession;
+import jakarta.jms.Message;
+import jakarta.jms.ObjectMessage;
+import jakarta.jms.Topic;
+import jakarta.jms.TopicConnection;
+import jakarta.jms.TopicConnectionFactory;
+import jakarta.jms.TopicPublisher;
+import jakarta.jms.TopicSession;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import org.jboss.arquillian.api.Deployment;
-import org.jboss.arquillian.api.Run;
-import org.jboss.arquillian.api.RunModeType;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.container.test.api.Deployment;
+//import org.jboss.arquillian.container.test.api.Run;
+//import org.jboss.arquillian.container.test.api.RunModeType;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.ejb3.examples.ch08.statusupdate.api.StatusUpdate;
 import org.jboss.ejb3.examples.ch08.statusupdate.api.StatusUpdateConstants;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
 
 import twitter4j.Twitter;
 
@@ -55,8 +57,8 @@ import twitter4j.Twitter;
  *
  * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
  */
-@RunWith(Arquillian.class)
-@Run(RunModeType.AS_CLIENT)
+@ExtendWith(ArquillianExtension.class)
+//@Run(RunModeType.AS_CLIENT)
 public class StatusUpdateIntegrationTest extends StatusUpdateTestBase
 {
 
@@ -111,7 +113,7 @@ public class StatusUpdateIntegrationTest extends StatusUpdateTestBase
    /**
     * Creates and starts a new JBossAS Server Embedded within this JVM
     */
-   @BeforeClass
+   @BeforeAll
    public static void setNamingContext() throws Exception
    {
       // Set Naming Context

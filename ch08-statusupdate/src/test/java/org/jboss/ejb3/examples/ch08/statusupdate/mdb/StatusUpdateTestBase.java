@@ -24,8 +24,7 @@ package org.jboss.ejb3.examples.ch08.statusupdate.mdb;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
-
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.jboss.ejb3.examples.ch08.statusupdate.api.StatusUpdate;
 
@@ -84,12 +83,12 @@ public class StatusUpdateTestBase
       final List<Status> statuses = twitterClient.getUserTimeline(new Paging(1, 1));
 
       // Ensure we've sent one status, and it's as expected
-      TestCase.assertEquals("Should have obtained one status (the most recent) back from request", 1, statuses.size());
+      assertEquals(1, statuses.size(), "Should have obtained one status (the most recent) back from request");
       final String roundtrip = statuses.get(0).getText();
       final String expected = sent.getText();
       log.info("Sent status update to Twitter: " + expected);
       log.info("Got last status update from Twitter: " + roundtrip);
-      TestCase.assertEquals("Twitter API did not update with last sent status", expected, roundtrip);
+      assertEquals(expected, roundtrip, "Twitter API did not update with last sent status");
    }
 
    /**

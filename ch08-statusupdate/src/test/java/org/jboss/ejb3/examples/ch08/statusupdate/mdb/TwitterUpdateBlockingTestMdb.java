@@ -24,9 +24,9 @@ package org.jboss.ejb3.examples.ch08.statusupdate.mdb;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
-import javax.jms.MessageListener;
+import jakarta.ejb.ActivationConfigProperty;
+import jakarta.ejb.MessageDriven;
+import jakarta.jms.MessageListener;
 
 import org.jboss.ejb3.examples.ch08.statusupdate.api.StatusUpdate;
 import org.jboss.ejb3.examples.ch08.statusupdate.api.StatusUpdateConstants;

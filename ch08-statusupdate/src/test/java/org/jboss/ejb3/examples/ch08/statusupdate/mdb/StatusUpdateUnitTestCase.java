@@ -23,13 +23,14 @@ package org.jboss.ejb3.examples.ch08.statusupdate.mdb;
 
 import java.util.logging.Logger;
 
-import javax.jms.MessageListener;
-import javax.jms.ObjectMessage;
+import jakarta.jms.MessageListener;
+import jakarta.jms.ObjectMessage;
 
-import junit.framework.TestCase;
+
 
 import org.jboss.ejb3.examples.ch08.statusupdate.api.StatusUpdate;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -77,12 +78,12 @@ public class StatusUpdateUnitTestCase extends StatusUpdateTestBase
       final StatusUpdate roundtrip = listener.getLastStatus();
 
       // Ensure it's what we sent
-      TestCase.assertEquals("Status sent was not dispatched and received as expected", newStatus, roundtrip);
+      assertEquals(newStatus, roundtrip, "Status sent was not dispatched and received as expected");
    }
 
    /**
     * Ensures that the {@link TwitterUpdateMdb} is updating Twitter
-    * when {@link MessageListener#onMessage(javax.jms.Message)} is invoked
+    * when {@link MessageListener#onMessage(jakarta.jms.Message)} is invoked
     */
    @Test
    public void testTwitterUpdateMdb() throws TwitterException
@@ -139,7 +140,7 @@ public class StatusUpdateUnitTestCase extends StatusUpdateTestBase
 
    /**
     * {@link MessageListener} to be invoked in a POJO environment, where the last 
-    * incoming status update via {@link MessageListener#onMessage(javax.jms.Message)}
+    * incoming status update via {@link MessageListener#onMessage(jakarta.jms.Message)}
     * is cached and available for retrieval.  Not thread-safe as this is intended to be used
     * in a single-threaded environment.
     */

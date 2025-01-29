@@ -23,15 +23,15 @@ package org.jboss.ejb3.examples.ch08.statusupdate.mdb;
 
 import java.util.logging.Logger;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
-import javax.jms.MessageListener;
+import jakarta.ejb.ActivationConfigProperty;
+import jakarta.ejb.MessageDriven;
+import jakarta.jms.MessageListener;
 
 import org.jboss.ejb3.examples.ch08.statusupdate.api.StatusUpdate;
 import org.jboss.ejb3.examples.ch08.statusupdate.api.StatusUpdateConstants;
 
 /**
- * An MDB which, {@link MessageListener#onMessage(javax.jms.Message)}, will
+ * An MDB which, {@link MessageListener#onMessage(jakarta.jms.Message)}, will
  * log out the status update at INFO-level. 
  * 
  * Not explicitly tested by the examples (because we can't test for logging), 

@@ -24,12 +24,12 @@ package org.jboss.ejb3.examples.ch08.messagedestinationlink.mdb;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
-import javax.ejb.ActivationConfigProperty;
-import javax.ejb.MessageDriven;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import jakarta.ejb.ActivationConfigProperty;
+import jakarta.ejb.MessageDriven;
+import jakarta.jms.JMSException;
+import jakarta.jms.Message;
+import jakarta.jms.MessageListener;
+import jakarta.jms.TextMessage;
 
 /**
  * MDB which is linked to a SLSB via the deployment descriptor; obtains messages
@@ -40,7 +40,7 @@ import javax.jms.TextMessage;
  */
 @MessageDriven(name = MessageDestinationLinkMdb.NAME_EJB, activationConfig =
 {@ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/MessageDestinationLinkQueue"),
-      @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")})
+      @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "jakarta.jms.Queue")})
 public class MessageDestinationLinkMdb implements MessageListener
 {
 
@@ -81,7 +81,7 @@ public class MessageDestinationLinkMdb implements MessageListener
 
    /**
     * {@inheritDoc}
-    * @see javax.jms.MessageListener#onMessage(javax.jms.Message)
+    * @see jakarta.jms.MessageListener#onMessage(jakarta.jms.Message)
     */
    @Override
    public void onMessage(final Message message)

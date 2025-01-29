@@ -21,7 +21,7 @@
  */
 package org.jboss.ejb3.examples.ch08.messagedestinationlink.slsb;
 
-import javax.jms.TextMessage;
+import jakarta.jms.TextMessage;
 
 /**
  * Business interface to send a message to a message

@@ -26,17 +26,21 @@ import java.util.logging.Logger;
 
 import javax.naming.Context;
 
-import junit.framework.TestCase;
-
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.ejb3.examples.ch08.messagedestinationlink.mdb.MessageDestinationLinkMdb;
 import org.jboss.ejb3.examples.ch08.messagedestinationlink.slsb.MessageSendingBusiness;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeAll;
+
 
 /**
  * Ensures that a SLSB wired to an MDB by way of a logical mapping
@@ -45,8 +49,8 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:andrew.rubinger@jboss.org">ALR</a>
  * @version $Revision: $
  */
-@RunWith(Arquillian.class)
-@Ignore // TODO Re-enable on AS7
+@ExtendWith(ArquillianExtension.class)
+@Disabled // TODO Re-enable on AS7
 public class MessageDestinationLinkIntegrationTest
 {
 
@@ -140,13 +144,13 @@ public class MessageDestinationLinkIntegrationTest
       // Ensure the MDB processed the message
       if (!processed)
       {
-         TestCase.fail("The MDB did not process the message in the allotted time.");
+         fail("The MDB did not process the message in the allotted time.");
       }
       log.info("MDB signaled it's done processing, so we can resume");
 
       // Ensure the contents are as expected
       final String roundtrip = MessageDestinationLinkMdb.LAST_MESSAGE;
-      TestCase.assertEquals("Last message sent was not as expected", message, roundtrip);
+      assertEquals(message, roundtrip, "Last message sent was not as expected");
    }
 
 }
